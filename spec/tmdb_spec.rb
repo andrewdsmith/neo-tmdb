@@ -11,9 +11,7 @@ describe TMDb do
   end
   describe ".configure" do
     it "yields the configuration" do
-      pending do
-        expect {|blk| TMDb.configure(&blk) }.to yield_with_args(TMDb.configuration)
-      end
+      expect {|blk| TMDb.configure(&blk) }.to yield_with_args(TMDb.configuration)
     end
   end
 end
