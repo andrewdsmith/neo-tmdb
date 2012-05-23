@@ -1,1 +1,4 @@
+# Allow for local tweaking of rspec options.
+.rspec
+
 Gemfile.lock
