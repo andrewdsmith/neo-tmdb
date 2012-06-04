@@ -1,0 +1,57 @@
+--- 
+http_interactions: 
+- request: 
+    method: get
+    uri: http://api.themoviedb.org/3/search/person?query=Reeves&api_key=TMDB_API_KEY
+    body: 
+      encoding: US-ASCII
+      string: ""
+    headers: {}
+
+  response: 
+    status: 
+      code: 200
+      message: 
+    headers: 
+      age: 
+      - "0"
+      cache-control: 
+      - public, max-age=0
+      content-type: 
+      - application/json;charset=utf-8
+      date: 
+      - Mon, 04 Jun 2012 17:14:55 GMT
+      server: 
+      - nginx
+      status: 
+      - 200 OK
+      vary: 
+      - Accept-Encoding
+      via: 
+      - 1.1 varnish
+      x-cache: 
+      - MISS
+      x-frame-options: 
+      - sameorigin
+      x-memc: 
+      - HIT
+      x-memc-age: 
+      - "192"
+      x-memc-key: 
+      - /search/person?include_adult=false&language=en&page=1&query=reeves
+      x-varnish: 
+      - "89218160"
+      x-varnish-sid: 
+      - tm-v-p-1100
+      x-xss-protection: 
+      - 1; mode=block
+      content-length: 
+      - "432"
+      connection: 
+      - Close
+    body: 
+      encoding: ASCII-8BIT
+      string: "{\"page\":1,\"results\":[{\"adult\":false,\"id\":6384,\"name\":\"Keanu Reeves\",\"profile_path\":\"/jmjeALlAVaPB8SonLR3qBN5myjc.jpg\"},{\"adult\":false,\"id\":11496,\"name\":\"George Reeves\",\"profile_path\":\"/98aYzkJmmsMHPmY77IUHVc2sbgy.jpg\"},{\"adult\":false,\"id\":89394,\"name\":\"Anita Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":79132,\"name\":\"Anna Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":99463,\"name\":\"B. Reeves Eason\",\"profile_path\":null},{\"adult\":false,\"id\":120200,\"name\":\"Bob Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":1041599,\"name\":\"Bubba Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":199807,\"name\":\"Christine Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":1022755,\"name\":\"Christopher Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":102752,\"name\":\"Chuck Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":155311,\"name\":\"Darryl Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":55698,\"name\":\"Del Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":156960,\"name\":\"Devon Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":31513,\"name\":\"Dianne Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":378754,\"name\":\"Dick Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":40427,\"name\":\"Earth Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":221688,\"name\":\"Emma Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":235023,\"name\":\"Gareth Reeves\",\"profile_path\":null},{\"adult\":false,\"id\":35276,\"name\":\"Garfield Reeves-Stevens\",\"profile_path\":null},{\"adult\":false,\"id\":135434,\"name\":\"Gemma Reeves\",\"profile_path\":null}],\"total_pages\":3,\"total_results\":57}"
+    http_version: 
+  recorded_at: Mon, 04 Jun 2012 17:14:55 GMT
+recorded_with: VCR 2.2.0

@@ -7,7 +7,7 @@ module TMDb
     its(:name) { should == "Keanu Reeves" }
     describe ".where" do
       let(:people) { Person.where(where_args) }
-      context "when passed :name" do
+      context "when passed :name", :vcr => { :cassette_name => "person_where_name" } do
         let(:search_term) { "Reeves" }
         let(:where_args) { { :name => search_term } }
         it "returns an enumerable" do
