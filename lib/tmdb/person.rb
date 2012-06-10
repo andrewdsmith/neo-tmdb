@@ -7,6 +7,21 @@ module TMDb
       @name = args["name"]
     end
 
+    # Returns the person with TMDb id of +id+.
+    #
+    def self.find(id)
+      connection = Faraday.new(:url => 'http://api.themoviedb.org/3/') do |builder|
+        builder.request :url_encoded
+        builder.adapter :net_http
+      end
+      response = connection.get(
+        "person/#{id}",
+        :api_key => TMDb.configuration.api_key
+      )
+      body = JSON.parse(response.body)
+      new(body)
+    end
+
     # Returns an enumerable containing all the people matching the
     # condition hash. Currently the only condition that can be specified
     # is name, e.g.
