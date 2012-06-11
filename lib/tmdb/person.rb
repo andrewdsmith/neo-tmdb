@@ -1,10 +1,14 @@
+require 'tmdb/attributes'
+
 module TMDb
   class Person
-    attr_reader :id, :name
+    extend Attributes
+
+    tmdb_attr :id
+    tmdb_attr :name
 
     def initialize(args)
-      @id = args["id"]
-      @name = args["name"]
+      @tmdb_attrs = args
     end
 
     # Returns the person with TMDb id of +id+.
