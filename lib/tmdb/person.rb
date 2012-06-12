@@ -4,8 +4,16 @@ module TMDb
   class Person
     extend Attributes
 
+    tmdb_attr :adult
+    tmdb_attr :also_known_as
+    tmdb_attr :biography
+    tmdb_attr :birthday
+    tmdb_attr :deathday
+    tmdb_attr :homepage
     tmdb_attr :id
     tmdb_attr :name
+    tmdb_attr :place_of_birth
+    tmdb_attr :profile_path
 
     def initialize(args)
       @tmdb_attrs = args

@@ -2,9 +2,33 @@ require 'spec_helper'
 
 module TMDb
   describe Person do
-    subject { Person.new("id" => 123, "name" => "Keanu Reeves") }
-    its(:id) { should == 123 }
-    its(:name) { should == "Keanu Reeves" }
+    context "when created with all attributes populated", :focus do
+      subject do
+        # JSON sample from http://help.themoviedb.org/kb/api/person-info.
+        Person.new(JSON.parse('{
+          "adult": false,
+          "also_known_as": [],
+          "biography": "From Wikipedia, the free encyclopedia...",
+          "birthday": "1963-12-18",
+          "deathday": "",
+          "homepage": "http://simplybrad.com/",
+          "id": 287,
+          "name": "Brad Pitt",
+          "place_of_birth": "Shawnee, Oklahoma, United States",
+          "profile_path": "/w8zJQuN7tzlm6FY9mfGKihxp3Cb.jpg"
+        }'))
+      end
+      its(:adult) { should == false }
+      its(:also_known_as) { should == [] }
+      its(:biography) { should == "From Wikipedia, the free encyclopedia..." }
+      its(:birthday) { should == "1963-12-18" }
+      its(:deathday) { should == "" }
+      its(:homepage) { should == "http://simplybrad.com/" }
+      its(:id) { should == 287 }
+      its(:name) { should == "Brad Pitt" }
+      its(:place_of_birth) { should == "Shawnee, Oklahoma, United States" }
+      its(:profile_path) { should == "/w8zJQuN7tzlm6FY9mfGKihxp3Cb.jpg" }
+    end
     describe ".find" do
       let(:person) { Person.find(find_args) }
       context "when passed an integer", :vcr => { :cassette_name => "person_find_keanu_by_id" } do
