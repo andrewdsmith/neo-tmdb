@@ -6,19 +6,23 @@ Neo TMDb is a Ruby wrapper for the v3 [TMDb API][api] from www.themoviedb.org.
 
 ## Use
 
-Currently you can only search for people by name and discover their id. Only
-the first 20 results for searches are returned.
-
-require 'neo-tmdb'
+Currently you can find people by their TMDb id or search for people.
 
 ```ruby
+require 'neo-tmdb'
+
 TMDb.configure do |config|
   # You must configure this library with a TMDb API key before you can use it.
   config.api_key = 'my-tmdb-api-key-here'
 end
 
+person = TMDb::Person.find(6384)
+puts "#{person.name}, born #{person.birthday} in #{person.place_of_birth}"
+
+# Note: Only the first 20 results are returned.
 people = TMDb::Person.where(:name => "Reeves")
 people.each do |person|
+  # Note: Only attributes available in the search API will be populated here.
   puts "#{person.name} has TMDb id #{person.id}"
 end
 ```
