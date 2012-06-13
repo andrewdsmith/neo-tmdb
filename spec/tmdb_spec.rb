@@ -9,6 +9,7 @@ describe TMDb do
       TMDb.configuration.should be(TMDb.configuration)
     end
   end
+
   describe ".configure" do
     it "yields the configuration" do
       expect {|blk| TMDb.configure(&blk) }.to yield_with_args(TMDb.configuration)
