@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module TMDb
   describe Person do
-    context "when created with all attributes populated", :focus do
+    context "when created with all attributes populated" do
       subject do
         # JSON sample from http://help.themoviedb.org/kb/api/person-info.
         Person.new(JSON.parse('{
