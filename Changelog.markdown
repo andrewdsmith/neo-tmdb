@@ -4,16 +4,20 @@
 
 New features:
 
-* Adds methods to `Configuration` for fetching and caching the [TMDb
+* The `Person#profile_image_url` method, which uses the base image URL fetched
+  from the TMDb configuration.
+* Methods on `Configuration` for fetching and caching the [TMDb
   configuration][], which can be used to build image URLs from a
   `Person#profile_path`.
-* Adds an initial implementation of the `Person.find` method for getting a
-  person by their TMDb id.
+* An initial implementation of the `Person.find` method for getting a person by
+  their TMDb id.
+
+[TMDb configuration]: http://help.themoviedb.org/kb/api/configuration
 
 ## 0.1.0 (2012-06-05)
 
 New features:
 
-* Adds an initial implementation of the `Person.where` method that searches for
+* An initial implementation of the `Person.where` method that searches for
   people on TMDb by name.
 

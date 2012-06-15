@@ -20,8 +20,8 @@ person = TMDb::Person.find(6384)
 puts "#{person.name}, born #{person.birthday} in #{person.place_of_birth}"
 # => Keanu Reeves, born 1964-09-02 in Beirut, Lebanon
 
-tmdb = TMDb.configuration
-puts [tmdb.image_base_url, tmdb.image_profile_sizes.first, person.profile_path].join
+smallest = TMDb.configuration.image_profile_sizes.first
+puts person.profile_image_url(smallest)
 # => http://cf2.imgobject.com/t/p/w45/jmjeALlAVaPB8SonLR3qBN5myjc.jpg
 
 # Note: Only the first 20 results are returned.

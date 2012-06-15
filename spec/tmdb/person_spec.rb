@@ -63,5 +63,15 @@ module TMDb
         end
       end
     end
+
+    describe "#profile_image_url", :vcr => { :cassette_name => "person_find_keanu_by_id" } do
+      let(:person) { Person.find(6384) }
+      let(:example_base_url) { 'http://example.com/path/' }
+      it 'returns a full URL based on the configuration and profile path' do
+        TMDb.configuration.stub(:image_base_url) { example_base_url }
+        person.profile_image_url(:my_image_size).should ==
+          "#{example_base_url}my_image_size/jmjeALlAVaPB8SonLR3qBN5myjc.jpg"
+      end
+    end
   end
 end

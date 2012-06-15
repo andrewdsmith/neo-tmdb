@@ -38,5 +38,13 @@ module TMDb
       response = TMDb.get_api_response('search/person', :query => args[:name])
       response["results"].map {|attrs| new(attrs) }
     end
+
+    # Returns a URL for the person's profile image at the given +size+. Valid
+    # sizes should be discovered via the +Configuration.image_profile_sizes+
+    # method.
+    #
+    def profile_image_url(size)
+      [TMDb.configuration.image_base_url, size, profile_path].join
+    end
   end
 end
