@@ -32,6 +32,10 @@ people.each do |person|
 end
 ```
 
+Further [documentation can be found on rdoc.info][docs].
+
+[docs]: http://rdoc.info/github/andrewdsmith/neo-tmdb/master/frames
+
 ## Contribute
 
 * Source hosted on [GitHub][].

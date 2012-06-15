@@ -2,6 +2,10 @@
 
 ## In git master branch
 
+Nothing yet.
+
+## 0.2.0 (2012-06-15)
+
 New features:
 
 * The `Person#profile_image_url` method, which uses the base image URL fetched
