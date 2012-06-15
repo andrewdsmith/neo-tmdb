@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module TMDb
   describe Person do
-    context "when created with all attributes populated", :focus do
+    context "when created with all attributes populated" do
       subject do
         # JSON sample from http://help.themoviedb.org/kb/api/person-info.
         Person.new(JSON.parse('{
@@ -29,6 +29,7 @@ module TMDb
       its(:place_of_birth) { should == "Shawnee, Oklahoma, United States" }
       its(:profile_path) { should == "/w8zJQuN7tzlm6FY9mfGKihxp3Cb.jpg" }
     end
+
     describe ".find" do
       let(:person) { Person.find(find_args) }
       context "when passed an integer", :vcr => { :cassette_name => "person_find_keanu_by_id" } do
@@ -42,6 +43,7 @@ module TMDb
         end
       end
     end
+
     describe ".where" do
       let(:people) { Person.where(where_args) }
       context "when passed :name", :vcr => { :cassette_name => "person_where_name" } do

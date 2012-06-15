@@ -4,6 +4,9 @@
 
 New features:
 
+* Adds methods to `Configuration` for fetching and caching the [TMDb
+  configuration][], which can be used to build image URLs from a
+  `Person#profile_path`.
 * Adds an initial implementation of the `Person.find` method for getting a
   person by their TMDb id.
 
