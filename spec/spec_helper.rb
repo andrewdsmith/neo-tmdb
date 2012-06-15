@@ -1,4 +1,5 @@
 require 'neo-tmdb'
+require 'webmock/rspec'
 require 'vcr'
 
 VCR.configure do |config|
