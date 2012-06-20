@@ -11,6 +11,16 @@ module TMDb
       end
     end
 
+    describe "#cache" do
+      it 'remembers the cache' do
+        config.cache = "1234"
+        config.cache.should == "1234"
+      end
+      it 'defaults to a null cache' do
+        config.cache.should be_a(NullCache)
+      end
+    end
+
     shared_examples :config_reader do |method, expected_value|
       describe "##{method}" do
         it "returns the #{ method.to_s.gsub('_', ' ') }" do
