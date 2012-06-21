@@ -1,3 +1,4 @@
+require 'active_support'
 require 'neo-tmdb'
 require 'webmock/rspec'
 require 'vcr'

@@ -17,14 +17,16 @@ module TMDb
   # called directly by client code, instead you should call methods such as
   # +Person.find+ that return TMDb wrapper objects.
   def get_api_response(path, params = {})
-    connection = Faraday.new(:url => 'http://api.themoviedb.org/3/') do |builder|
-      builder.request :url_encoded
-      builder.adapter :net_http
+    configuration.cache.fetch([path, params]) do
+      connection = Faraday.new(:url => 'http://api.themoviedb.org/3/') do |builder|
+        builder.request :url_encoded
+        builder.adapter :net_http
+      end
+      response = connection.get(
+        path,
+        params.merge({ :api_key => TMDb.configuration.api_key })
+      )
+      JSON.parse(response.body)
     end
-    response = connection.get(
-      path,
-      params.merge({ :api_key => TMDb.configuration.api_key })
-    )
-    JSON.parse(response.body)
   end
 end

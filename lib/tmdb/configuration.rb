@@ -1,6 +1,10 @@
 module TMDb
   class Configuration
-    attr_accessor :api_key
+    attr_accessor :api_key, :cache
+
+    def initialize
+      @cache = NullCache.new
+    end
 
     # Returns the base URL for use in constructing image URLs.
     def image_base_url

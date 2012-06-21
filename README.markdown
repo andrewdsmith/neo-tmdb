@@ -1,6 +1,7 @@
 # Neo TMDb
 
 Neo TMDb is a Ruby wrapper for the v3 [TMDb API][api] from www.themoviedb.org.
+It provides read-only access with caching.
 
 [api]: http://help.themoviedb.org/kb/api/about-3
 
@@ -31,6 +32,44 @@ people.each do |person|
   puts "#{person.name} has TMDb id #{person.id}"
 end
 ```
+
+### Configure caching
+
+You can configure caching so that duplicate requests for the same person are
+read from the cache rather than directly from the TMDb servers. This helps
+improve the performance of you application but also prevents it from exceeding
+the [API request limits][limits] on the TMDb servers.
+
+[limits]: http://help.themoviedb.org/kb/general/api-request-limits
+
+```ruby
+require 'active_support'
+require 'benchmark'
+require 'neo-tmdb'
+
+TMDb.configure do |config|
+  config.api_key = 'my-tmdb-api-key-here'
+  # You should configure your cache to expire entries after an appropriate
+  # period. Note that MemoryStore may not be the best choice for your
+  # application.
+  config.cache = ActiveSupport::Cache::MemoryStore.new
+end
+
+# Note in the following how the first request takes considerable longer than
+# the subsequent cached requests.
+100.times do |n|
+  Benchmark.benchmark('find ') do |b|
+    b.report(n.to_s) do
+      person = TMDb::Person.find(6384)
+      puts "  #{person.name} load #{n}"
+    end
+  end
+end
+```
+
+You can use any cache that implements ActiveSupport's `Cache` interface.
+
+### Documentation
 
 Further [documentation can be found on rdoc.info][docs].
 
