@@ -2,6 +2,10 @@
 
 ## In git master branch
 
+Nothing yet.
+
+## 0.3.0 (2012-06-25)
+
 New features:
 
 * Caching support through `Configuration#cache`.
