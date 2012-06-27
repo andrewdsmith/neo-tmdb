@@ -3,6 +3,9 @@ require 'neo-tmdb'
 require 'webmock/rspec'
 require 'vcr'
 
+# Allow VCR to process real HTTP requests.
+WebMock.allow_net_connect!
+
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/cassettes'
   config.hook_into :faraday
