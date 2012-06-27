@@ -41,10 +41,12 @@ module TMDb
 
     # Returns a URL for the person's profile image at the given +size+. Valid
     # sizes should be discovered via the +Configuration.image_profile_sizes+
-    # method.
+    # method. Returns nil if the person does not have a profile image.
     #
     def profile_image_url(size)
-      [TMDb.configuration.image_base_url, size, profile_path].join
+      if profile_path
+        [TMDb.configuration.image_base_url, size, profile_path].join
+      end
     end
   end
 end
