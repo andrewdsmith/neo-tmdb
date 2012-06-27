@@ -2,6 +2,10 @@
 
 ## In git master branch
 
+Nothing yet.
+
+## 0.3.1 (2012-06-27)
+
 Fixes:
 
 * Return nil from `Person#profile_image_url` when `Person#profile_path` is nil.
