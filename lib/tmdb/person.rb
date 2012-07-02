@@ -30,13 +30,13 @@ module TMDb
     # condition hash. Currently the only condition that can be specified
     # is name, e.g.
     #
-    #   people = Person.where(:name => "Reeves")
+    #   people = Person.where(:name => 'Reeves')
     #
     # Only the first page of results (20 people) are returned.
     #
     def self.where(args)
       response = TMDb.get_api_response('search/person', :query => args[:name])
-      response["results"].map {|attrs| new(attrs) }
+      response['results'].map {|attrs| new(attrs) }
     end
 
     # Returns a URL for the person's profile image at the given +size+. Valid

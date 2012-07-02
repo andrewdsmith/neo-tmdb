@@ -9,7 +9,7 @@ module TMDb
         expect { |block| cache.fetch('example_key', &block) }.to yield_control
       end
       it 'returns the value of the yielded block' do
-        cache.fetch('example_key') { "123" }.should == "123"
+        cache.fetch('example_key') { '123' }.should == '123'
       end
     end
   end

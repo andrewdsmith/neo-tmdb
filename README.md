@@ -26,7 +26,7 @@ puts person.profile_image_url(smallest)
 # => http://cf2.imgobject.com/t/p/w45/jmjeALlAVaPB8SonLR3qBN5myjc.jpg
 
 # Note: Only the first 20 results are returned.
-people = TMDb::Person.where(:name => "Reeves")
+people = TMDb::Person.where(:name => 'Reeves')
 people.each do |person|
   # Note: Only attributes available in the search API will be populated here.
   puts "#{person.name} has TMDb id #{person.id}"

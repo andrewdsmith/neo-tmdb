@@ -1,22 +1,22 @@
 require 'spec_helper'
 
 describe TMDb do
-  describe ".configuration" do
-    it "returns a TMDb::Configuration object" do
+  describe '.configuration' do
+    it 'returns a TMDb::Configuration object' do
       TMDb.configuration.should be_a(TMDb::Configuration)
     end
-    it "returns the same object each time" do
+    it 'returns the same object each time' do
       TMDb.configuration.should be(TMDb.configuration)
     end
   end
 
-  describe ".configure" do
-    it "yields the configuration" do
+  describe '.configure' do
+    it 'yields the configuration' do
       expect {|blk| TMDb.configure(&blk) }.to yield_with_args(TMDb.configuration)
     end
   end
 
-  describe ".get_api_response" do
+  describe '.get_api_response' do
     let(:example_path) { 'test/path' }
     let(:example_params) { { :a => '1', :b => 'two' } }
     let(:example_api_key) { '345' }
