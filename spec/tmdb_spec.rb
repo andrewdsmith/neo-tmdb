@@ -23,6 +23,7 @@ describe TMDb do
     let(:example_response) { '{ "c": 6 }' }
     let(:expected_url) { 'http://api.themoviedb.org/3/test/path' }
     let(:expected_query) { example_params.merge(:api_key => example_api_key) }
+
     before(:each) do
       # We use webmock instead of VCR as these are abstract HTTP tests.
       # TODO: This has been addressed in vcr recently by
@@ -39,6 +40,7 @@ describe TMDb do
       # it back on for other examples that require it to be active.
       VCR.turn_on!
     end
+
     it 'makes an HTTP request with the given path, params and TMDb API key' do
       TMDb.get_api_response(example_path, example_params)
       a_request(:get, expected_url).with(:query => expected_query).should have_been_made
@@ -47,6 +49,7 @@ describe TMDb do
       response = TMDb.get_api_response(example_path, example_params)
       response.should == JSON.parse(example_response)
     end
+
     context 'when not passed params' do
       let(:example_params) { { } }
       it 'defaults to no parameters' do
@@ -54,12 +57,14 @@ describe TMDb do
         a_request(:get, expected_url).with(:query => expected_query).should have_been_made
       end
     end
+
     context 'when not configured with a cache' do
       it 'makes an HTTP request once per call with same parameters' do
         3.times { TMDb.get_api_response(example_path, example_params) }
         a_request(:get, expected_url).with(:query => expected_query).should have_been_made.times(3)
       end
     end
+
     context 'when configured with a cache' do
       it 'makes a single HTTP request per call with same parameters' do
         [1, 2].each do |n|

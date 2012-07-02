@@ -41,6 +41,7 @@ module TMDb
         # See spec/spec_helper.rb for setup of the API key.
         config.api_key = TMDb.configuration.api_key
       end
+
       include_examples :config_reader, :image_backdrop_sizes, ['w300', 'w780', 'w1280', 'original']
       include_examples :config_reader, :image_base_url, 'http://cf2.imgobject.com/t/p/'
       include_examples :config_reader, :image_poster_sizes,  ['w92', 'w154', 'w185', 'w342', 'w500', 'original']

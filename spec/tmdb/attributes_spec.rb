@@ -12,6 +12,7 @@ module TMDb
   describe Attributes do
     describe '.tmdb_attr' do
       let(:example_instance) { ExampleExtendedClass.new('foo' => 'bar') }
+
       it 'adds a method with the given name' do
         example_instance.public_methods.should include(:foo)
       end

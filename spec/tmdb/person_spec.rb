@@ -32,8 +32,10 @@ module TMDb
 
     describe '.find' do
       let(:person) { Person.find(find_args) }
+
       context 'when passed an integer', :vcr => { :cassette_name => 'person_find_keanu_by_id' } do
         let(:find_args) { 6384 }
+
         it 'returns a Person object' do
           person.should be_a(Person)
         end
@@ -46,9 +48,11 @@ module TMDb
 
     describe '.where' do
       let(:people) { Person.where(where_args) }
+
       context 'when passed :name', :vcr => { :cassette_name => 'person_where_name' } do
         let(:search_term) { 'Reeves' }
         let(:where_args) { { :name => search_term } }
+
         it 'returns an enumerable' do
           people.should have_at_least(1).person
         end
@@ -76,6 +80,7 @@ module TMDb
 
       context 'when the profile path is nil', :vcr => { :cassette_name => 'person_find_no_profile_path' } do
         let(:person) { Person.find(93322) }
+
         it 'returns nil' do
           person.profile_image_url(:my_image_size).should be_nil
         end
