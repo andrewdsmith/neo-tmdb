@@ -1,6 +1,8 @@
 module TMDb
   extend self
 
+  class ServiceUnavailable < StandardError; end
+
   # Returns the global TMDb configuration.
   #
   def configuration
@@ -19,6 +21,9 @@ module TMDb
   # called directly by client code, instead you should call methods such as
   # +Person.find+ that return TMDb wrapper objects.
   #
+  # Raises a +TMDb::ServiceUnavailable+ error if the service is unavailable or
+  # the API request limits have been exceeded.
+  #
   def get_api_response(path, params = {})
     configuration.cache.fetch([path, params]) do
       connection = Faraday.new(:url => 'http://api.themoviedb.org/3/') do |builder|
@@ -29,7 +34,11 @@ module TMDb
         path,
         params.merge({ :api_key => TMDb.configuration.api_key })
       )
-      JSON.parse(response.body)
+      if response.status == 503
+        raise ServiceUnavailable
+      else
+        JSON.parse(response.body)
+      end
     end
   end
 end
