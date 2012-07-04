@@ -2,7 +2,11 @@
 
 ## In git master branch
 
-Nothing yet.
+Fixes:
+
+* Raise `TMDb::ServiceUnavailable` error from calls based on
+  `TMDb.get_api_response` when the service is unavailable or API limits have
+  been exceeded.
 
 ## 0.3.1 (2012-06-27)
 
