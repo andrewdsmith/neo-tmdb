@@ -20,6 +20,7 @@ describe TMDb do
     let(:example_path) { 'test/path' }
     let(:example_params) { { :a => '1', :b => 'two' } }
     let(:example_api_key) { '345' }
+    let(:example_status) { 200 }
     let(:example_response) { '{ "c": 6 }' }
     let(:expected_url) { 'http://api.themoviedb.org/3/test/path' }
     let(:expected_query) { example_params.merge(:api_key => example_api_key) }
@@ -32,7 +33,7 @@ describe TMDb do
       VCR.turn_off!
       stub_request(:get, expected_url).
         with(:query => hash_including(example_params)).
-        to_return(:body => example_response)
+        to_return(:status => example_status, :body => example_response)
       TMDb.configure {|config| config.api_key = example_api_key }
     end
     after(:each) do
@@ -87,6 +88,16 @@ describe TMDb do
           with(:query => hash_including({ 'param' => '1' })).should have_been_made.times(1)
         a_request(:get, 'http://api.themoviedb.org/3/path1').
           with(:query => hash_including({ 'param' => '2' })).should have_been_made.times(1)
+      end
+    end
+
+    context 'when the service is unavailable', :focus do
+      let(:example_status) { 503 }
+
+      it 'raises a TMDb::ServiceUnavailable error' do
+        expect do
+          TMDb.get_api_response(example_path, example_params)
+        end.to raise_error(TMDb::ServiceUnavailable)
       end
     end
   end
