@@ -1,4 +1,5 @@
 require 'tmdb/attributes'
+require 'tmdb/null_person'
 
 module TMDb
   class Person
@@ -22,8 +23,12 @@ module TMDb
     # Returns the person with TMDb id of +id+.
     #
     def self.find(id)
-      response = TMDb.get_api_response("person/#{id}")
-      new(response)
+      begin
+        response = TMDb.get_api_response("person/#{id}")
+        new(response)
+      rescue ServiceUnavailable
+        TMDb.configuration.null_person || raise
+      end
     end
 
     # Returns an enumerable containing all the people matching the

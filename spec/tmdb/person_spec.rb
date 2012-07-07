@@ -32,16 +32,43 @@ module TMDb
 
     describe '.find' do
       let(:person) { Person.find(find_args) }
+      let(:find_args) { 6384 }
 
       context 'when passed an integer', :vcr => { :cassette_name => 'person_find_keanu_by_id' } do
-        let(:find_args) { 6384 }
-
         it 'returns a Person object' do
           person.should be_a(Person)
         end
         it 'returns the person matching the TMDb person id' do
           person.id.should == find_args
           person.name.should == 'Keanu Reeves'
+        end
+      end
+      context 'when the TMDb service is unavailable' do
+        before(:each) do
+          # TODO: See tmdb_spec.rb for notes on VCR.turn_off!
+          VCR.turn_off!
+          stub_request(:get, /.*/).to_return(:status => 503)
+
+          TMDb.configure {|c| c.null_person = null_person }
+        end
+        after(:each) do
+          VCR.turn_on!
+        end
+
+        context 'when not configured to return a null object' do
+          let(:null_person) { nil }
+
+          it 'raises a TMDb::ServiceUnavailable error' do
+            expect { person }.to raise_error(TMDb::ServiceUnavailable)
+          end
+        end
+
+        context 'when configured to return a null object' do
+          let(:null_person) { mock(NullPerson) }
+
+          it 'returns a NullPerson object' do
+            person.should be(null_person)
+          end
         end
       end
     end
