@@ -21,6 +21,17 @@ module TMDb
       end
     end
 
+    describe '#null_person' do
+      it 'remembers the null person instance' do
+        object = Object.new
+        config.null_person = object
+        config.null_person.should be(object)
+      end
+      it 'defaults to a NullPerson' do
+        config.null_person.should be_a(NullPerson)
+      end
+    end
+
     shared_examples :config_reader do |method, expected_value|
       describe "##{method}" do
         it "returns the #{ method.to_s.gsub('_', ' ') }" do
