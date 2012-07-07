@@ -27,7 +27,7 @@ module TMDb
         response = TMDb.get_api_response("person/#{id}")
         new(response)
       rescue ServiceUnavailable
-        NullPerson.new
+        TMDb.configuration.null_person || raise
       end
     end
 

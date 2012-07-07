@@ -91,7 +91,7 @@ describe TMDb do
       end
     end
 
-    context 'when the service is unavailable', :focus do
+    context 'when the service is unavailable' do
       let(:example_status) { 503 }
 
       it 'raises a TMDb::ServiceUnavailable error' do

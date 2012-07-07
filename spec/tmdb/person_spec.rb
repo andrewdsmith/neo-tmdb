@@ -43,18 +43,32 @@ module TMDb
           person.name.should == 'Keanu Reeves'
         end
       end
-      context 'when the TMDb service is unavailable', :focus do
+      context 'when the TMDb service is unavailable' do
         before(:each) do
           # TODO: See tmdb_spec.rb for notes on VCR.turn_off!
           VCR.turn_off!
           stub_request(:get, /.*/).to_return(:status => 503)
+
+          TMDb.configure {|c| c.null_person = null_person }
         end
         after(:each) do
           VCR.turn_on!
         end
 
-        it 'returns a NullPerson object' do
-          person.should be_a(NullPerson)
+        context 'when not configured to return a null object' do
+          let(:null_person) { nil }
+
+          it 'raises a TMDb::ServiceUnavailable error' do
+            expect { person }.to raise_error(TMDb::ServiceUnavailable)
+          end
+        end
+
+        context 'when configured to return a null object' do
+          let(:null_person) { mock(NullPerson) }
+
+          it 'returns a NullPerson object' do
+            person.should be(null_person)
+          end
         end
       end
     end
