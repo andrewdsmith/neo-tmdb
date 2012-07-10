@@ -7,6 +7,9 @@
 # Allow for local rvm settings.
 .rvmrc
 
+# Ignore temporary output from things like aruba-based scenarios.
+tmp
+
 # We're a gem, so we don't commit Gemfile.lock.
 # http://yehudakatz.com/2010/12/16/clarifying-the-roles-of-the-gemspec-and-gemfile/
 Gemfile.lock
