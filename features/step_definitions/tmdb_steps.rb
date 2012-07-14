@@ -9,23 +9,30 @@ Given /^my TMDb API key in environment variable TMDB_API_KEY$/ do
 end
 
 When /^I run the following code:$/ do |code|
-  code = %{
+  code = %!
     require 'vcr'
     VCR.configure do |c|
       c.hook_into :faraday
       c.cassette_library_dir = '../../features/cassettes'
-      c.default_cassette_options = {:record => :new_episodes }
+      c.default_cassette_options = { :record => :new_episodes }
       c.filter_sensitive_data('TMDB_API_KEY') { ENV['TMDB_API_KEY'] }
+      c.before_http_request do |request|
+        STDERR.puts "Request made to \#{request.uri}"
+      end
     end
 
     VCR.use_cassette('#{@vcr_cassette}') do
       #{code}
     end
-  }
+  !
   write_file('scenario.rb', code)
   run_simple('ruby scenario.rb')
 end
 
 Then /^each line of the output should contain "(.*?)"$/ do |string|
-  all_output.each_line {|line| line.should match(/#{string}/) }
+  all_stdout.each_line {|line| line.should match(/#{string}/) }
+end
+
+Then /^only one request to the TMDb servers should be made$/ do
+  all_stderr.scan(/^Request made/).should have(1).match
 end
