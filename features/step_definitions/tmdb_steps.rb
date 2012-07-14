@@ -8,8 +8,18 @@ Given /^my TMDb API key in environment variable TMDB_API_KEY$/ do
   end
 end
 
+Given /^the TMDb service is unavailable$/ do
+  @code_template = %!
+    require 'webmock'
+    include WebMock::API
+    stub_request(:any, /.*/).to_return(:status => 503)
+
+    %{code}
+  !
+end
+
 When /^I run the following code:$/ do |code|
-  code = %!
+  @code_template ||= %!
     require 'vcr'
     VCR.configure do |c|
       c.hook_into :faraday
@@ -22,9 +32,10 @@ When /^I run the following code:$/ do |code|
     end
 
     VCR.use_cassette('#{@vcr_cassette}') do
-      #{code}
+      %{code}
     end
   !
+  code = @code_template % { :code => code }
   write_file('scenario.rb', code)
   run_simple('ruby scenario.rb')
 end
