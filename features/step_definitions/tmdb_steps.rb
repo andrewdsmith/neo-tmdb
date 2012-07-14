@@ -36,3 +36,7 @@ end
 Then /^only one request to the TMDb servers should be made$/ do
   all_stderr.scan(/^Request made/).should have(1).match
 end
+
+Then /^the output should be an HTTP URL$/ do
+  URI.parse(all_stdout).should be_an_instance_of(URI::HTTP)
+end
