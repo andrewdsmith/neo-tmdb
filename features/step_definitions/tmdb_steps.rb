@@ -25,3 +25,7 @@ When /^I run the following code:$/ do |code|
   write_file('scenario.rb', code)
   run_simple('ruby scenario.rb')
 end
+
+Then /^each line of the output should contain "(.*?)"$/ do |string|
+  all_output.each_line {|line| line.should match(/#{string}/) }
+end

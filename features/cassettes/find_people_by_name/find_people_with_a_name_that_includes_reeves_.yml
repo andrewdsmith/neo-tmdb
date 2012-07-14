@@ -1,0 +1,71 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://api.themoviedb.org/3/search/person?query=Reeves&api_key=TMDB_API_KEY
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: !!null 
+    headers:
+      access-control-allow-origin:
+      - ! '*'
+      age:
+      - '0'
+      cache-control:
+      - public, max-age=0
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Sat, 14 Jul 2012 10:03:23 GMT
+      etag:
+      - ! '"94506d2ad86f7382c18866184abdab8d"'
+      server:
+      - nginx
+      status:
+      - 200 OK
+      vary:
+      - Accept-Encoding
+      via:
+      - 1.1 varnish
+      x-cache:
+      - MISS
+      x-memc:
+      - HIT
+      x-memc-age:
+      - '764'
+      x-memc-key:
+      - /search/person?include_adult=false&language=en&page=1&query=reeves
+      x-varnish:
+      - '119444292'
+      x-varnish-sid:
+      - tm-v-p-1200
+      x-xss-protection:
+      - 1; mode=block
+      content-length:
+      - '571'
+      connection:
+      - Close
+    body:
+      encoding: ASCII-8BIT
+      string: ! '{"page":1,"results":[{"adult":false,"id":6384,"name":"Keanu Reeves","profile_path":"/2iIDCiw8fyxRodh7fxzIsW0ITj7.jpg"},{"adult":false,"id":68495,"name":"Perrey
+        Reeves","profile_path":"/8qXaUqYhPDqMhBQdyGacSU4mjAl.jpg"},{"adult":false,"id":114573,"name":"Pat
+        Reeves","profile_path":null},{"adult":false,"id":13363,"name":"Saskia Reeves","profile_path":"/6N1dqfV3eZ2EHD2cyyndAiGCg6k.jpg"},{"adult":false,"id":120200,"name":"Bob
+        Reeves","profile_path":null},{"adult":false,"id":11496,"name":"George Reeves","profile_path":"/98aYzkJmmsMHPmY77IUHVc2sbgy.jpg"},{"adult":false,"id":52565,"name":"Hope
+        Elizabeth Reeves","profile_path":null},{"adult":false,"id":55698,"name":"Del
+        Reeves","profile_path":null},{"adult":false,"id":574253,"name":"Lindsey Reeves","profile_path":null},{"adult":false,"id":32278,"name":"Matt
+        Reeves","profile_path":"/b2n6pQgtyR4T8V4oWy8xVngeLow.jpg"},{"adult":false,"id":99463,"name":"B.
+        Reeves Eason","profile_path":null},{"adult":false,"id":35276,"name":"Garfield
+        Reeves-Stevens","profile_path":null},{"adult":false,"id":68655,"name":"Harry
+        Reeves","profile_path":null},{"adult":false,"id":133743,"name":"Hubert Reeves","profile_path":null},{"adult":false,"id":1070278,"name":"James
+        Reeves","profile_path":null},{"adult":false,"id":103290,"name":"Juliet Reeves","profile_path":null},{"adult":false,"id":183877,"name":"Lisa
+        Reeves","profile_path":null},{"adult":false,"id":63507,"name":"M. Casey Reeves","profile_path":null},{"adult":false,"id":127714,"name":"Matt
+        Reeves","profile_path":"/55jmoLgCKqT6JFVR8DVRvv8I3g.jpg"},{"adult":false,"id":181815,"name":"Vic
+        Reeves","profile_path":"/warYG6YVkPv4g8Vvlc5AXiiz323.jpg"}],"total_pages":3,"total_results":58}'
+    http_version: !!null 
+  recorded_at: Sat, 14 Jul 2012 10:03:23 GMT
+recorded_with: VCR 2.2.0
