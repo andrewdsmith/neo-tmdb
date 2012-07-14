@@ -38,5 +38,5 @@ Then /^only one request to the TMDb servers should be made$/ do
 end
 
 Then /^the output should be an HTTP URL$/ do
-  URI.parse(all_stdout).should be_an_instance_of(URI::HTTP)
+  all_stdout.should be_an_http_url
 end
