@@ -1,6 +1,6 @@
 # Changelog
 
-## In git master branch
+## 0.4.0 (2012-07-15)
 
 New features:
 
