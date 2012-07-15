@@ -3,7 +3,7 @@
 [![Dependency Status](https://gemnasium.com/andrewdsmith/neo-tmdb.png)](https://gemnasium.com/andrewdsmith/neo-tmdb)
 
 Neo TMDb is a Ruby wrapper for the v3 [TMDb API][api] from www.themoviedb.org.
-It provides read-only access with caching.
+It provides read-only access with caching and fault tolerance.
 
 [api]: http://help.themoviedb.org/kb/api/about-3
 
@@ -73,7 +73,8 @@ You can use any cache that implements ActiveSupport's `Cache` interface.
 
 ### Documentation
 
-Further [documentation can be found on rdoc.info][docs].
+Further documentation can be found in the feature files and on
+[rdoc.info][docs].
 
 [docs]: http://rdoc.info/github/andrewdsmith/neo-tmdb/master/frames
 

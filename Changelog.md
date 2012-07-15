@@ -2,6 +2,13 @@
 
 ## In git master branch
 
+New features:
+
+* Fault tolerance in `Person.find`. Returns a `NullObject` instance if
+  the TMDb service is unavailable. This can be configured through
+  `Configuration#null_person`. See the newly created feature files for
+  examples.
+
 Fixes:
 
 * Raise `TMDb::ServiceUnavailable` error from calls based on
