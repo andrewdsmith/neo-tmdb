@@ -49,6 +49,10 @@ describe TMDb do
     end
 
     context 'when not configured with a cache' do
+      before(:each) do
+        TMDb.configure {|config| config.cache = TMDb::NullCache.new }
+      end
+
       it 'makes an HTTP request once per call with same parameters' do
         3.times { TMDb.get_api_response(example_path, example_params) }
         a_request(:get, expected_url).with(:query => expected_query).should have_been_made.times(3)
@@ -56,13 +60,16 @@ describe TMDb do
     end
 
     context 'when configured with a cache' do
+      before(:each) do
+        TMDb.configure {|config| config.cache = ActiveSupport::Cache::MemoryStore.new }
+      end
+
       it 'makes a single HTTP request per call with same parameters' do
         [1, 2].each do |n|
           stub_request(:get, "http://api.themoviedb.org/3/path#{n}").
             with(:query => hash_including({})).
             to_return(:body => example_response)
         end
-        TMDb.configure {|config| config.cache = ActiveSupport::Cache::MemoryStore.new }
         3.times do
           TMDb.get_api_response('path1')
           TMDb.get_api_response('path2')
