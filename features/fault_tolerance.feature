@@ -21,13 +21,30 @@ Feature: Fault tolerance
         config.api_key = ENV['TMDB_API_KEY']
       end
 
-      begin
-        person = TMDb::Person.find(6384)
-      rescue TMDb::ServiceUnavailable
-        puts 'Service unavailable'
-      end
+      person = TMDb::Person.find(6384)
+      puts "> #{person.name} - #{person.birthday} - #{person.profile_image_url(:any_size)} <"
       """
-    Then the output should not contain "Service unavailable"
+    Then the output should contain ">  -  -  <"
+
+  Scenario: With a custom null person configured
+    When I run the following code:
+      """
+      require 'neo-tmdb'
+
+      null_person = TMDb::NullPerson.new
+      null_person.name = 'Unknown'
+      null_person.birthday = nil
+      null_person.profile_image_url = 'http://example.com/no_image.jpg'
+
+      TMDb.configure do |config|
+        config.api_key = ENV['TMDB_API_KEY']
+        config.null_person = null_person
+      end
+
+      person = TMDb::Person.find(6384)
+      puts "> #{person.name} - #{person.birthday} - #{person.profile_image_url(:any_size)} <"
+      """
+    Then the output should contain "> Unknown -  - http://example.com/no_image.jpg <"
 
   Scenario: With no null person configured
     When I run the following code:
@@ -46,3 +63,4 @@ Feature: Fault tolerance
       end
       """
     Then the output should contain "Service unavailable"
+
