@@ -1,5 +1,7 @@
 # Neo TMDb
 
+[![Dependency Status](https://gemnasium.com/andrewdsmith/neo-tmdb.png)](https://gemnasium.com/andrewdsmith/neo-tmdb)
+
 Neo TMDb is a Ruby wrapper for the v3 [TMDb API][api] from www.themoviedb.org.
 It provides read-only access with caching.
 
