@@ -2,6 +2,11 @@ require 'spec_helper'
 
 module TMDb
   describe Person do
+    let(:api_response) { 'An example API response' }
+    before(:each) do
+      TMDb.stub(:get_api_response) { api_response }
+    end
+
     context 'when created with all attributes populated' do
       subject do
         # JSON sample from http://help.themoviedb.org/kb/api/person-info.
@@ -31,85 +36,92 @@ module TMDb
     end
 
     describe '.find' do
-      let(:person) { Person.find(find_args) }
-      let(:find_args) { 6384 }
-
-      context 'when passed an integer', :vcr => { :cassette_name => 'person_find_keanu_by_id' } do
-        it 'returns a Person object' do
-          person.should be_a(Person)
-        end
-        it 'returns the person matching the TMDb person id' do
-          person.id.should == find_args
-          person.name.should == 'Keanu Reeves'
-        end
+      let(:id) { 123 }
+      let(:new_person) { mock(Person) }
+      before(:each) do
+        Person.stub(:new) { new_person }
       end
+
+      it 'makes an API request to "person/{id}"' do
+        TMDb.should_receive(:get_api_response).with("person/#{id}")
+        Person.find(id)
+      end
+      it 'constructs a new Person object with the API response' do
+        Person.should_receive(:new).with(api_response)
+        Person.find(id)
+      end
+      it 'returns the new Person object' do
+        Person.find(id).should be(new_person)
+      end
+
       context 'when the TMDb service is unavailable' do
         before(:each) do
-          # TODO: See tmdb_spec.rb for notes on VCR.turn_off!
-          VCR.turn_off!
-          stub_request(:get, /.*/).to_return(:status => 503)
-
           TMDb.configure {|c| c.null_person = null_person }
-        end
-        after(:each) do
-          VCR.turn_on!
-        end
-
-        context 'when not configured to return a null object' do
-          let(:null_person) { nil }
-
-          it 'raises a TMDb::ServiceUnavailable error' do
-            expect { person }.to raise_error(TMDb::ServiceUnavailable)
-          end
+          TMDb.stub(:get_api_response) { raise TMDb::ServiceUnavailable }
         end
 
         context 'when configured to return a null object' do
           let(:null_person) { mock(NullPerson) }
 
           it 'returns a NullPerson object' do
-            person.should be(null_person)
+            Person.find(id).should be(null_person)
+          end
+        end
+
+        context 'when not configured to return a null object' do
+          let(:null_person) { nil }
+
+          it 'raises a TMDb::ServiceUnavailable error' do
+            expect { Person.find(id) }.to raise_error(TMDb::ServiceUnavailable)
           end
         end
       end
     end
 
     describe '.where' do
-      let(:people) { Person.where(where_args) }
+      context 'when passed :name' do
+        let(:name) { 'bob' }
+        let(:api_response) { { 'results' => results } }
+        let(:results) { ['a', 'b', 'c'] }
+        let(:new_people) { (1..3).map { mock(Person) } }
+        before(:each) do
+          Person.stub(:new).and_return(*new_people)
+        end
 
-      context 'when passed :name', :vcr => { :cassette_name => 'person_where_name' } do
-        let(:search_term) { 'Reeves' }
-        let(:where_args) { { :name => search_term } }
-
-        it 'returns an enumerable' do
-          people.should have_at_least(1).person
+        it 'makes an API request to "search/person" with the name as query' do
+          TMDb.should_receive(:get_api_response).with('search/person', :query => name)
+          Person.where(:name => name)
         end
-        it 'returns Person objects in the enumerable' do
-          people.each {|person| person.should be_a(Person) }
+        it 'constructs a new Person object for each result in the API response' do
+          results.each do |result|
+            Person.should_receive(:new).with(result)
+          end
+          Person.where(:name => name)
         end
-        it 'returns only people matching the given name' do
-          people.each {|person| person.name.should include(search_term) }
-        end
-        it 'returns everyone with their id set' do
-          people.each {|person| person.id.should be_a(Fixnum) }
+        it 'returns an Enumerable containing the new Person objects' do
+          Person.where(:name => name).should == new_people
         end
       end
     end
 
-    describe '#profile_image_url', :vcr => { :cassette_name => 'person_find_keanu_by_id' } do
-      let(:person) { Person.find(6384) }
-      let(:example_base_url) { 'http://example.com/path/' }
-
-      it 'returns a full URL based on the configuration and profile path' do
-        TMDb.configuration.stub(:image_base_url) { example_base_url }
-        person.profile_image_url(:my_image_size).should ==
-          "#{example_base_url}my_image_size/jmjeALlAVaPB8SonLR3qBN5myjc.jpg"
+    describe '#profile_image_url' do
+      let(:person) { Person.new('profile_path' => profile_path) }
+      let(:profile_path) { '/profile_path.jpg' }
+      let(:image_base_url) { 'http://example.com/images/' }
+      before(:each) do
+        TMDb.configuration.stub(:image_base_url) { image_base_url }
       end
 
-      context 'when the profile path is nil', :vcr => { :cassette_name => 'person_find_no_profile_path' } do
-        let(:person) { Person.find(93322) }
+      it 'returns a full URL based on the configuration and profile path' do
+        person.profile_image_url(:example_image_size).should ==
+          [image_base_url, :example_image_size, profile_path].join
+      end
+
+      context 'when the person has no profile path' do
+        let(:profile_path) { nil }
 
         it 'returns nil' do
-          person.profile_image_url(:my_image_size).should be_nil
+          person.profile_image_url(:example_image_size).should be_nil
         end
       end
     end

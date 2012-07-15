@@ -24,22 +24,11 @@ describe TMDb do
     let(:example_response) { '{ "c": 6 }' }
     let(:expected_url) { 'http://api.themoviedb.org/3/test/path' }
     let(:expected_query) { example_params.merge(:api_key => example_api_key) }
-
     before(:each) do
-      # We use webmock instead of VCR as these are abstract HTTP tests.
-      # TODO: This has been addressed in vcr recently by
-      # https://github.com/myronmarston/vcr/issues/146, so the following may
-      # become redundant when we upgrade vcr.
-      VCR.turn_off!
       stub_request(:get, expected_url).
         with(:query => hash_including(example_params)).
         to_return(:status => example_status, :body => example_response)
       TMDb.configure {|config| config.api_key = example_api_key }
-    end
-    after(:each) do
-      # The vcr configuration is stateful between examples so we need to switch
-      # it back on for other examples that require it to be active.
-      VCR.turn_on!
     end
 
     it 'makes an HTTP request with the given path, params and TMDb API key' do
@@ -60,6 +49,10 @@ describe TMDb do
     end
 
     context 'when not configured with a cache' do
+      before(:each) do
+        TMDb.configure {|config| config.cache = TMDb::NullCache.new }
+      end
+
       it 'makes an HTTP request once per call with same parameters' do
         3.times { TMDb.get_api_response(example_path, example_params) }
         a_request(:get, expected_url).with(:query => expected_query).should have_been_made.times(3)
@@ -67,13 +60,16 @@ describe TMDb do
     end
 
     context 'when configured with a cache' do
+      before(:each) do
+        TMDb.configure {|config| config.cache = ActiveSupport::Cache::MemoryStore.new }
+      end
+
       it 'makes a single HTTP request per call with same parameters' do
         [1, 2].each do |n|
           stub_request(:get, "http://api.themoviedb.org/3/path#{n}").
             with(:query => hash_including({})).
             to_return(:body => example_response)
         end
-        TMDb.configure {|config| config.cache = ActiveSupport::Cache::MemoryStore.new }
         3.times do
           TMDb.get_api_response('path1')
           TMDb.get_api_response('path2')

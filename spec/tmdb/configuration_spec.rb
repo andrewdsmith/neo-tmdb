@@ -3,6 +3,9 @@ require 'spec_helper'
 module TMDb
   describe Configuration do
     let(:config) { Configuration.new }
+    before(:each) do
+      TMDb.stub(:get_api_response) { api_response }
+    end
 
     describe '#api_key' do
       it 'remembers the API key' do
@@ -32,31 +35,28 @@ module TMDb
       end
     end
 
-    shared_examples :config_reader do |method, expected_value|
+    shared_examples :config_reader do |method|
       describe "##{method}" do
+        let(:api_response) { { 'images' => { method.to_s.gsub(/^image_/, '') => config_value } } }
+        let(:config_value) { 'Example config value' }
+
+        it 'makes an API request to "configuration"' do
+          TMDb.should_receive(:get_api_response).with('configuration')
+          config.send(method)
+        end
         it "returns the #{ method.to_s.gsub('_', ' ') }" do
-          config.send(method).should == expected_value
+          config.send(method).should == config_value
         end
         it 'caches the result for subsequent calls' do
-          # This test currently works because VCR will refuse the second
-          # request when replaying the cassette recorded in the first example.
-          # This means that if this example will pass if run in isolation or
-          # before other examples and vcr is re-recording the cassette.
-          expect { 2.times { config.send(method) } }.to_not raise_error
+          TMDb.should_receive(:get_api_response).once
+          2.times { config.send(method) }
         end
       end
     end
 
-    context 'when configured with an API key value', :vcr => { :cassette_name => 'configuration' } do
-      before(:each) do
-        # See spec/spec_helper.rb for setup of the API key.
-        config.api_key = TMDb.configuration.api_key
-      end
-
-      include_examples :config_reader, :image_backdrop_sizes, ['w300', 'w780', 'w1280', 'original']
-      include_examples :config_reader, :image_base_url, 'http://cf2.imgobject.com/t/p/'
-      include_examples :config_reader, :image_poster_sizes,  ['w92', 'w154', 'w185', 'w342', 'w500', 'original']
-      include_examples :config_reader, :image_profile_sizes,  ['w45', 'w185', 'h632', 'original']
-    end
+    include_examples :config_reader, :image_backdrop_sizes
+    include_examples :config_reader, :image_base_url
+    include_examples :config_reader, :image_poster_sizes
+    include_examples :config_reader, :image_profile_sizes
   end
 end
