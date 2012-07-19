@@ -82,8 +82,9 @@ Further documentation can be found in the feature files and on
 
 * Source hosted on [GitHub][].
 * Report issues on [GitHub Issues][].
-* Pull requests are very welcome! Please include spec coverage for every patch
-  and create a topic branch for every separate change you make.
+* Pull requests are very welcome! Please include scenario and spec coverage for
+  every patch and create a topic branch for every separate change you make.
+* Tests are run by the defaults `rake` task.
 
 [GitHub]: https://github.com/andrewdsmith/neo-tmdb
 [GitHub Issues]: https://github.com/andrewdsmith/neo-tmdb/issues
