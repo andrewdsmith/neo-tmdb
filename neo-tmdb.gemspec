@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'aruba', '~> 0.4'
   s.add_development_dependency 'activesupport', '~> 3.2'
   s.add_development_dependency 'cucumber', '~> 1.2'
+  s.add_development_dependency 'rake', '~> 0.9.2'
   s.add_development_dependency 'rspec', '~> 2.10'
   s.add_development_dependency 'webmock', '~> 1.8'
   s.add_development_dependency 'vcr', '~> 2.2'
